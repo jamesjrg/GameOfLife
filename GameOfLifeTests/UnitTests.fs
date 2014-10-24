@@ -23,18 +23,18 @@ let coordinatesFromAsciiArt art =
 
 [<TestCase(
     "|XX
-        |XX",
+     |XX",
     "|XX
-        |XX",
+     |XX",
     "block, still life"
 )>]
 [<TestCase(
     "| XX
-    |X  X
-    | XX",
+     |X  X
+     | XX",
     "| XX
-    |X  X
-    | XX",
+     |X  X
+     | XX",
     "beehive, still life"
 )>]
 let tick_tests initial expected message =
