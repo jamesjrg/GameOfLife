@@ -1,16 +1,43 @@
-﻿namespace GameOfLifeTests
+﻿module GameOfLifeTests
 
 open NUnit.Framework
-open FsUnit
+open GameOfLife.Game
 
-[<TestFixture>] 
-type ``Given something or other`` ()=
-    let lightBulb = new LightBulb(true)
+[<Test>]
+let ``neighbours for (0,0)`` ()=
+    let expected = [
+        (-1, -1);
+        (-1, 0);
+        (-1, 1);
+        (0, -1);
+        (0, 1);
+        (1, -1);
+        (1, 0);
+        (1, 1);
+    ]
 
-    [<Test>] member x.
-     ``when I ask whether it is On it answers true.`` ()=
-            lightBulb.On |> should be True
+    CollectionAssert.AreEquivalent (expected, getNeighbours (0, 0))
 
-    [<Test>] member x.
-     ``when I convert it to a string it becomes "On".`` ()=
-            string lightBulb |> should equal "On"
+let coordinatesFromAsciiArt art =
+    [ (0,0); ]
+
+[<TestCase(
+    "|XX
+        |XX",
+    "|XX
+        |XX",
+    "block, still life"
+)>]
+[<TestCase(
+    "| XX
+    |X  X
+    | XX",
+    "| XX
+    |X  X
+    | XX",
+    "beehive, still life"
+)>]
+let tick_tests initial expected message =
+    Assert.AreEqual (coordinatesFromAsciiArt expected,
+        coordinatesFromAsciiArt (tick (coordinatesFromAsciiArt initial)),
+        message)

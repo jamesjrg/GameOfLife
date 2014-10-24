@@ -2,3 +2,5 @@ GameOfLife.v12.suo
 packages/
 GameOfLife/bin/
 GameOfLife/obj/
+GameOfLifeTests/bin/
+GameOfLifeTests/obj/

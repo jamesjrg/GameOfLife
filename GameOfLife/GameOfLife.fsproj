@@ -42,7 +42,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Grid.fs" />
+    <Compile Include="Game.fs" />
     <None Include="Script.fsx" />
   </ItemGroup>
   <PropertyGroup>
