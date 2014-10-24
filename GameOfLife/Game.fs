@@ -1,21 +1,20 @@
 ﻿module GameOfLife.Game
 
-(* somewhat based on https://github.com/chrisphelps/funConway/blob/master/src/test/scala/FunConway.scala *)
-
 open System.Collections.Generic
 
 let getNeighbours (row, column) = 
     seq {
         for neighbourRow in row - 1 .. row + 1 do
-            yield! seq {
-                for neighbourColumn in column - 1 .. column + 1 do
-                    if not (neighbourRow = row && neighbourColumn = column) then yield (neighbourRow, neighbourColumn)
-            }
+        for neighbourColumn in column - 1 .. column + 1 do
+        if not (neighbourRow = row && neighbourColumn = column) then yield (neighbourRow, neighbourColumn)
     }
 
-let countLiveNeighbours cell oldCells = 
-   1
+let countLiveNeighbours cell oldCellsMemoized = 
+   getNeighbours cell
+   |> Seq.filter (fun neighbour -> oldCellsMemoized neighbour)
+   |> Seq.length
 
+(* following two functions somewhat based on https://github.com/chrisphelps/funConway/blob/master/src/test/scala/FunConway.scala *)
 let shouldLive (cell : int * int) (oldCellsMemoized : (int * int) -> bool) =
     match (countLiveNeighbours cell oldCellsMemoized, oldCellsMemoized cell) with
     | (neighbourCount, true) when neighbourCount < 2 -> false

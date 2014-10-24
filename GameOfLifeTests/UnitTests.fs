@@ -18,8 +18,17 @@ let ``neighbours for (0,0)`` ()=
 
     CollectionAssert.AreEquivalent (expected, getNeighbours (0, 0))
 
+let splitLines (s:string) = 
+    List.ofSeq(s.Split([|'\n'|]))
+
+(* this function somewhat based on http://rosettacode.org/wiki/Conway%27s_Game_of_Life/Scala *)
 let coordinatesFromAsciiArt art =
-    [ (0,0); ]
+    let lines = splitLines art |> List.map (fun line -> line.TrimStart().Substring(1))
+    seq {
+        for (row, line) in List.mapi (fun row line -> (row, line)) lines do
+        for (column, character) in Seq.mapi (fun column character -> (column, character)) line do
+        if character = 'X' then yield (row, column)
+    }
 
 [<TestCase(
     "|XX
@@ -29,15 +38,34 @@ let coordinatesFromAsciiArt art =
     "block, still life"
 )>]
 [<TestCase(
-    "| XX
+    "| XX 
      |X  X
-     | XX",
-    "| XX
+     | XX ",
+    "| XX 
      |X  X
-     | XX",
+     | XX ",
     "beehive, still life"
 )>]
+[<TestCase(
+    "|   
+     |XXX",
+    "| X
+     | X
+     | X",
+    "blinker, oscillator"
+)>]
+[<TestCase(
+    "|
+     | XXX
+     |XXX",
+    "|  X
+     |X  X
+     |X  X
+     | X",
+    "toad, oscillator"
+)>]
+
 let tick_tests initial expected message =
     Assert.AreEqual (coordinatesFromAsciiArt expected,
-        coordinatesFromAsciiArt (tick (coordinatesFromAsciiArt initial)),
+        tick (coordinatesFromAsciiArt initial),
         message)
