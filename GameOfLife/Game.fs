@@ -14,7 +14,8 @@ let countLiveNeighbours cell oldCellsMemoized =
    |> Seq.filter (fun neighbour -> oldCellsMemoized neighbour)
    |> Seq.length
 
-(* following two functions somewhat based on https://github.com/chrisphelps/funConway/blob/master/src/test/scala/FunConway.scala *)
+(* following two functions somewhat based on https://github.com/chrisphelps/funConway/blob/master/src/test/scala/FunConway.scala
+*)
 let shouldLive (cell : int * int) (oldCellsMemoized : (int * int) -> bool) =
     match (countLiveNeighbours cell oldCellsMemoized, oldCellsMemoized cell) with
     | (neighbourCount, true) when neighbourCount < 2 -> false
